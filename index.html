@@ -45,16 +45,40 @@
         .native-ad-box { width: 100%; margin: 10px 0; min-height: 100px; }
         @media (min-width: 1100px) { .desktop-side-banner { display: block; } }
 
-        .quick-lang-btn {
+        /* الأزرار العلوية */
+        .top-buttons {
             position: absolute; top: 15px; left: 15px; z-index: 4000;
+            display: flex; gap: 10px;
+        }
+
+        .quick-btn {
             background: var(--panel); color: white; border: 2px solid var(--accent);
-            border-radius: 50%; width: 40px; height: 40px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; font-size: 20px;
+            border-radius: 50%; width: 45px; height: 45px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 22px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
+        /* نافذة صانع اللعبة */
+        #creator-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: var(--card); color: var(--text); padding: 25px; border-radius: 20px;
+            width: 85%; max-width: 400px; text-align: center; position: relative;
+            border: 3px solid var(--accent);
+        }
+        .close-modal { position: absolute; top: 10px; right: 10px; cursor: pointer; font-size: 24px; }
+        .support-links { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .support-btn {
+            padding: 12px; border-radius: 10px; border: none; text-decoration: none;
+            color: white; font-weight: bold; font-size: 14px; cursor: pointer;
+            display: block;
+        }
+
         #boost-timers {
-            position: absolute; top: 70px; width: 90%; max-width: 400px;
+            position: absolute; top: 75px; width: 90%; max-width: 400px;
             z-index: 3000; pointer-events: none;
             left: 50%; transform: translateX(-50%);
         }
@@ -152,12 +176,29 @@
         <script src="https://www.highperformanceformat.com/bdb32d347782185bab7940c564cb6ca6/invoke.js"></script>
     </div>
 
-    <button class="quick-lang-btn" onclick="toggleLanguage()">🌐</button>
+    <div class="top-buttons">
+        <button class="quick-btn" onclick="toggleLanguage()">🌐</button>
+        <button class="quick-btn" onclick="openCreatorModal()">⭐</button>
+    </div>
+
+    <div id="creator-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCreatorModal()">×</span>
+            <h3 id="modal-title">كلمة من صانع اللعبة 👑</h3>
+            <p id="modal-desc">اهلا انا مصطفى صانع و مالك اللعبة، ديه اول لعبة Html لية و تعبت فيها جامد فا اتمنا انكم تستمتعوا بيها :)</p>
+            <hr>
+            <div class="support-links">
+                <button class="support-btn" style="background: #003087; opacity: 0.8;" id="paypal-btn">PayPal (قريباً)</button>
+                <a href="https://www.effectivegatecpm.com/af25kfe3b?key=e0bbe407cbbcce14215938bf63723a2d" target="_blank" class="support-btn" style="background: var(--success);" id="ads-btn">💙 ادعمنى بمشاهدة اى عدد من الاعلانات</a>
+                <a href="https://www.youtube.com/@MostafaAhmed-it2qr" target="_blank" class="support-btn" style="background: #ff0000;" id="youtube-btn">🎬 لو عايز تتابعنى و تتفرج على المحتوى</a>
+            </div>
+        </div>
+    </div>
 
     <div id="boost-timers">
-        <div id="jack-timer" class="timer-bar"><span id="txt-jack-active"></span> <span id="jack-sec">30</span></div>
-        <div id="double-timer" class="timer-bar"><span id="txt-double-active"></span> <span id="double-sec">60</span></div>
-        <div id="reactor-timer" class="timer-bar">☢️ المفاعل النووي نشط: <span id="reactor-sec">120</span></div>
+        <div id="jack-timer" class="timer-bar"><span id="txt-jack-active"></span> <span id="jack-sec">30</span> <span class="lbl-seconds"></span></div>
+        <div id="double-timer" class="timer-bar"><span id="txt-double-active"></span> <span id="double-sec">60</span> <span class="lbl-seconds"></span></div>
+        <div id="reactor-timer" class="timer-bar"><span id="txt-reactor-active"></span> <span id="reactor-sec">120</span> <span class="lbl-seconds"></span></div>
     </div>
 
     <div class="main-container">
@@ -191,16 +232,16 @@
 
         <div id="boosts" class="items-grid">
             <div class="card">
-                <div><strong id="label-jack-name"></strong> (30 ثانية)<br><small id="label-jack-desc"></small></div>
+                <div><strong id="label-jack-name"></strong> (<span id="jack-val">30</span> <span class="lbl-seconds"></span>)<br><small id="label-jack-desc"></small></div>
                 <button class="buy-btn" id="btn-jack-buy" style="background:#f1c40f; color:black" onclick="handleSmartBoost('jack')"></button>
             </div>
             <div class="card">
-                <div><strong id="label-double-name"></strong> (60 ثانية)<br><small id="label-double-desc"></small></div>
+                <div><strong id="label-double-name"></strong> (<span id="double-val">60</span> <span class="lbl-seconds"></span>)<br><small id="label-double-desc"></small></div>
                 <button class="buy-btn" id="btn-double-buy" style="background:#e67e22" onclick="handleSmartBoost('double')"></button>
             </div>
             <div class="card" id="reactor-card" style="border: 4px solid #2ecc71;">
-                <div><strong>☢️ المفاعل النووي (120 ثانية)</strong><br><small>قوة 5x تلقائية وإشعاعية</small></div>
-                <button class="buy-btn" id="btn-reactor-buy" style="background:#27ae60" onclick="handleSmartBoost('reactor')">تفعيل (0/3)</button>
+                <div><strong id="label-reactor-name"></strong> (<span id="reactor-val">120</span> <span class="lbl-seconds"></span>)<br><small id="label-reactor-desc"></small></div>
+                <button class="buy-btn" id="btn-reactor-buy" style="background:#27ae60" onclick="handleSmartBoost('reactor')"></button>
             </div>
         </div>
 
@@ -251,8 +292,36 @@
     ];
 
     const translations = {
-        ar: { power: "⚡ القوة: +", tools: "🛠️ الأدوات", boosts: "🚀 تعزيزات", settings: "⚙️ الإعدادات", particles: "✨ المؤثرات", shake: "📳 الاهتزاز", dark: "🌙 الوضع الليلي", langLabel: "🌐 اللغة", langName: "العربية", flag: "🇪🇬", on: "تشغيل", off: "إيقاف", buy: "تفعيل (إعلان بسيط)", equipped: "✅ مجهز", equip: "تجهيز", jackActive: "🚜 الجاك هامر: ", doubleActive: "🔥 مضاعف النقاط: ", jackName: "🚜 Jackhammer", jackDesc: "سرعة + قوة مضاعفة", doubleName: "🔥 Double Points", doubleDesc: "قوة 2x", toolNames: ["إصبع", "ضربة يد", "مطرقة", "مرزبة", "ديناميت"] },
-        en: { power: "⚡ Power: +", tools: "🛠️ Tools", boosts: "🚀 Boosts", settings: "⚙️ Settings", particles: "✨ Particles", shake: "📳 Shake", dark: "🌙 Dark Mode", langLabel: "🌐 Language", langName: "English", flag: "🇺🇸", on: "ON", off: "OFF", buy: "Use (Quick Ad)", equipped: "✅ Equipped", equip: "Equip", jackActive: "🚜 Jackhammer: ", doubleActive: "🔥 Double Points: ", jackName: "🚜 Jackhammer", jackDesc: "Super Speed + 2x Power", doubleName: "🔥 Double Points", doubleDesc: "2x Global Multiplier", toolNames: ["Finger", "Hand Smash", "Hammer", "Sledge", "Dynamite"] }
+        ar: { 
+            power: "⚡ القوة: +", tools: "🛠️ الأدوات", boosts: "🚀 تعزيزات", settings: "⚙️ الإعدادات", 
+            particles: "✨ المؤثرات", shake: "📳 الاهتزاز", dark: "🌙 الوضع الليلي", 
+            langLabel: "🌐 اللغة", langName: "العربية", flag: "🇪🇬", on: "تشغيل", off: "إيقاف", 
+            buy: "تفعيل (إعلان بسيط)", equipped: "✅ مجهز", equip: "تجهيز", seconds: "ثانية",
+            jackActive: "🚜 الجاك هامر: ", doubleActive: "🔥 مضاعف النقاط: ", reactorActive: "☢️ المفاعل النووي نشط: ",
+            jackName: "🚜 Jackhammer", jackDesc: "سرعة + قوة مضاعفة", 
+            doubleName: "🔥 Double Points", doubleDesc: "قوة 2x", 
+            reactorName: "☢️ المفاعل النووي", reactorDesc: "قوة 5x تلقائية وإشعاعية",
+            toolNames: ["إصبع", "ضربة يد", "مطرقة", "مرزبة", "ديناميت"],
+            modalTitle: "كلمة من صانع اللعبة 👑",
+            modalDesc: "اهلا انا مصطفى صانع و مالك اللعبة، ديه اول لعبة Html لية و تعبت فيها جامد فا اتمنا انكم تستمتعوا بيها :)",
+            modalAds: "💙 ادعمنى بمشاهدة اى عدد من الاعلانات",
+            modalYoutube: "🎬 لو عايز تتابعنى و تتفرج على المحتوى"
+        },
+        en: { 
+            power: "⚡ Power: +", tools: "🛠️ Tools", boosts: "🚀 Boosts", settings: "⚙️ Settings", 
+            particles: "✨ Particles", shake: "📳 Shake", dark: "🌙 Dark Mode", 
+            langLabel: "🌐 Language", langName: "English", flag: "🇺🇸", on: "ON", off: "OFF", 
+            buy: "Use (Quick Ad)", equipped: "✅ Equipped", equip: "Equip", seconds: "Seconds",
+            jackActive: "🚜 Jackhammer: ", doubleActive: "🔥 Double Points: ", reactorActive: "☢️ Nuclear Reactor Active: ",
+            jackName: "🚜 Jackhammer", jackDesc: "Super Speed + 2x Power", 
+            doubleName: "🔥 Double Points", doubleDesc: "2x Global Multiplier", 
+            reactorName: "☢️ Nuclear Reactor", reactorDesc: "5x Auto & Radiated Power",
+            toolNames: ["Finger", "Hand Smash", "Hammer", "Sledge", "Dynamite"],
+            modalTitle: "Message From Game Creator 👑",
+            modalDesc: "Hi, I am Mostafa, the creator and owner of this game. This is my first HTML game and I worked very hard on it, so I hope you enjoy it! :)",
+            modalAds: "💙 Support me by watching any number of ads",
+            modalYoutube: "🎬 Subscribe to follow my content"
+        }
     };
 
     const toolList = [
@@ -262,6 +331,9 @@
         { cost: 25000, power: 100, icon: "⚒️", pColor: "#34495e" },
         { cost: 250000, power: 500, icon: "🧨", pColor: "#e74c3c" }
     ];
+
+    function openCreatorModal() { document.getElementById('creator-modal').style.display = 'flex'; }
+    function closeCreatorModal() { document.getElementById('creator-modal').style.display = 'none'; }
 
     function saveGame() { localStorage.setItem('clickerEmpireData', JSON.stringify({ score, ownedTools, currentIcon, basePower, config, currentLang, reactorClicks })); }
     function loadGame() {
@@ -418,28 +490,39 @@
         document.getElementById('p-toggle').innerText = config.particles ? t.on : t.off; document.getElementById('p-toggle').className = `toggle-btn ${config.particles ? 'on' : 'off'}`;
         document.getElementById('s-toggle').innerText = config.shake ? t.on : t.off; document.getElementById('s-toggle').className = `toggle-btn ${config.shake ? 'on' : 'off'}`;
         document.getElementById('dark-toggle').innerText = config.darkMode ? t.on : t.off; document.getElementById('dark-toggle').className = `toggle-btn ${config.darkMode ? 'on' : 'off'}`;
-        document.getElementById('txt-jack-active').innerText = t.jackActive; document.getElementById('txt-double-active').innerText = t.doubleActive;
-        document.getElementById('label-jack-name').innerText = t.jackName; document.getElementById('label-jack-desc').innerText = t.jackDesc;
-        document.getElementById('label-double-name').innerText = t.doubleName; document.getElementById('label-double-desc').innerText = t.doubleDesc;
-        document.getElementById('btn-jack-buy').innerText = t.buy; document.getElementById('btn-double-buy').innerText = t.buy;
         
+        // Dynamic Timers & Labels
+        document.querySelectorAll('.lbl-seconds').forEach(el => el.innerText = t.seconds);
+        document.getElementById('txt-jack-active').innerText = t.jackActive; 
+        document.getElementById('txt-double-active').innerText = t.doubleActive;
+        document.getElementById('txt-reactor-active').innerText = t.reactorActive;
+        
+        document.getElementById('label-jack-name').innerText = t.jackName; 
+        document.getElementById('label-jack-desc').innerText = t.jackDesc;
+        document.getElementById('label-double-name').innerText = t.doubleName; 
+        document.getElementById('label-double-desc').innerText = t.doubleDesc;
+        document.getElementById('label-reactor-name').innerText = t.reactorName;
+        document.getElementById('label-reactor-desc').innerText = t.reactorDesc;
+
+        document.getElementById('btn-jack-buy').innerText = t.buy; 
+        document.getElementById('btn-double-buy').innerText = t.buy;
+        
+        // Modal Translations
+        document.getElementById('modal-title').innerText = t.modalTitle;
+        document.getElementById('modal-desc').innerText = t.modalDesc;
+        document.getElementById('ads-btn').innerText = t.modalAds;
+        document.getElementById('youtube-btn').innerText = t.modalYoutube;
+        document.getElementById('paypal-btn').innerText = `PayPal (${currentLang === 'ar' ? 'قريباً' : 'Soon'})`;
+
         const reactorCard = document.getElementById('reactor-card');
         const colors = ["#2ecc71", "#f1c40f", "#e74c3c"];
         reactorCard.style.borderColor = colors[reactorClicks] || "#2ecc71";
-        document.getElementById('btn-reactor-buy').innerText = `تفعيل (${reactorClicks}/3)`;
+        document.getElementById('btn-reactor-buy').innerText = `${t.buy.split(' ')[0]} (${reactorClicks}/3)`;
         
         renderTools();
     }
 
     loadGame(); updateDisplay();
-
-    // --- كود الكشف عن مانع الإعلانات (Ad-Block Detector) ---
-    setTimeout(function() {
-        var adElement = document.querySelector('ins, iframe, [id^="container-"], .native-ad-box');
-        if (!adElement || adElement.innerHTML.length == 0 || adElement.clientHeight === 0) {
-            alert("عزيزي اللاعب، يبدو أنك تستخدم مانع إعلانات (Brave Shield أو AdBlock). فضلاً قم بتعطيله لدعم استمرار اللعبة وتطويرها! 👑");
-        }
-    }, 4000); // يفحص بعد 4 ثوانٍ لضمان تحميل الصفحة بالكامل
 </script>
 
 <script src="https://pl28492436.effectivegatecpm.com/6a/89/03/6a8903a0780ff0aa091b1029c50ae947.js"></script>
