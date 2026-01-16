@@ -432,6 +432,14 @@
     }
 
     loadGame(); updateDisplay();
+
+    // --- كود الكشف عن مانع الإعلانات (Ad-Block Detector) ---
+    setTimeout(function() {
+        var adElement = document.querySelector('ins, iframe, [id^="container-"], .native-ad-box');
+        if (!adElement || adElement.innerHTML.length == 0 || adElement.clientHeight === 0) {
+            alert("عزيزي اللاعب، يبدو أنك تستخدم مانع إعلانات (Brave Shield أو AdBlock). فضلاً قم بتعطيله لدعم استمرار اللعبة وتطويرها! 👑");
+        }
+    }, 4000); // يفحص بعد 4 ثوانٍ لضمان تحميل الصفحة بالكامل
 </script>
 
 <script src="https://pl28492436.effectivegatecpm.com/6a/89/03/6a8903a0780ff0aa091b1029c50ae947.js"></script>
