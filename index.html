@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="html-tag">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>إمبراطورية النقر - النسخة البصرية</title>
+    
+    <script src="https://pl28484672.effectivegatecpm.com/01/09/39/010939fc0a523957ff32201ced0e3fc0.js"></script>
+
+    <style>
+        :root {
+            --primary: #6c5ce7; --secondary: #a29bfe; --accent: #fdcb6e;
+            --bg: #f1f2f6; --panel: #2d3436; --card: white; --text: #2d3436;
+            --success: #2ecc71; --danger: #e74c3c; --info: #3498db;
+            --tab-bg: #ddd;
+        }
+
+        .dark-mode {
+            --bg: #121212; --panel: #000000; --card: #1e1e1e; --text: #ecf0f1;
+            --tab-bg: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--bg);
+            color: var(--text); display: flex; flex-direction: column; align-items: center;
+            overflow-y: auto; 
+            overflow-x: hidden;
+            touch-action: manipulation; user-select: none; transition: background 0.3s ease;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .main-container { 
+            width: 100%; max-width: 500px; padding: 20px; text-align: center; 
+            min-height: 100vh; 
+            display: flex; flex-direction: column; 
+            margin-top: 20px; 
+            box-sizing: border-box;
+            z-index: 5;
+        }
+
+        .desktop-side-banner { display: none; position: fixed; top: 50%; transform: translateY(-50%); z-index: 100; }
+        .banner-left { left: 10px; } .banner-right { right: 10px; }
+        .banner-horizontal { width: 100%; display: flex; justify-content: center; margin: 15px 0; }
+        .native-ad-box { width: 100%; margin: 10px 0; min-height: 100px; }
+        @media (min-width: 1100px) { .desktop-side-banner { display: block; } }
+
+        .quick-lang-btn {
+            position: absolute; top: 15px; left: 15px; z-index: 4000;
+            background: var(--panel); color: white; border: 2px solid var(--accent);
+            border-radius: 50%; width: 40px; height: 40px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        #boost-timers {
+            position: absolute; top: 70px; width: 90%; max-width: 400px;
+            z-index: 3000; pointer-events: none;
+            left: 50%; transform: translateX(-50%);
+        }
+        
+        .timer-bar {
+            background: rgba(0,0,0,0.8); color: white; padding: 8px;
+            border-radius: 10px; margin-bottom: 5px; font-size: 12px;
+            display: none; border-left: 5px solid var(--accent);
+        }
+
+        .progress-wrapper {
+            width: 100%; background: #e0e0e0; border-radius: 15px; height: 25px; margin: 10px 0; position: relative; overflow: hidden; border: 2px solid var(--panel);
+        }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #a29bfe, #fdcb6e); transition: width 0.4s ease; }
+        .progress-label { position: absolute; width: 100%; text-align: center; top: 50%; transform: translateY(-50%); font-size: 0.75rem; font-weight: bold; color: #2d3436; }
+
+        .display-panel {
+            background: var(--panel); color: white; padding: 20px; border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); margin-bottom: 20px;
+        }
+        .score { font-size: 2.8rem; font-weight: bold; color: var(--accent); }
+        .rank-display { font-size: 1.1rem; color: var(--secondary); margin-bottom: 5px; font-weight: bold; }
+
+        #action-btn {
+            width: 150px; height: 150px; border-radius: 50%;
+            background: var(--primary); border: 8px solid var(--secondary);
+            font-size: 60px; cursor: pointer; transition: none;
+            box-shadow: 0 8px 0 #4834d4; position: relative; flex-shrink: 0;
+            margin: 0 auto 20px auto; outline: none;
+        }
+
+        .is-pressed { transform: scale(0.9) translateY(8px) !important; box-shadow: 0 0 0 #4834d4 !important; }
+
+        .floating-num { position: absolute; pointer-events: none; color: var(--success); font-weight: bold; font-size: 24px; animation: floatUp 0.6s ease-out forwards; z-index: 1500; }
+        @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-100px); opacity: 0; } }
+
+        .particle { position: absolute; pointer-events: none; animation: explode 0.5s ease-out forwards; z-index: 1400; }
+        
+        /* تأثير الدخان الإشعاعي الجديد */
+        .nuclear-smoke {
+            position: absolute; pointer-events: none;
+            border-radius: 50%; background: rgba(46, 204, 113, 0.6);
+            filter: blur(5px); animation: smokeFloat 2s ease-out forwards; z-index: 1600;
+        }
+        @keyframes smokeFloat {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+            50% { transform: translate(var(--mx), -50px) scale(1.5); opacity: 0.5; }
+            100% { transform: translate(var(--dx), -150px) scale(2); opacity: 0; }
+        }
+
+        .shard-rect { width: 4px; height: 10px; }
+        .shard-tri { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 10px solid #57606f; background: transparent !important; }
+
+        @keyframes explode {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--dx), var(--dy)) scale(var(--s)) rotate(var(--dr)); opacity: 0; }
+        }
+
+        .shaking { animation: fastShake 0.1s infinite; }
+        @keyframes fastShake { 0% { transform: translate(3px, 3px); } 50% { transform: translate(-3px, -3px); } 100% { transform: translate(0, 0); } }
+
+        .tabs { display: flex; gap: 5px; margin-bottom: 10px; z-index: 10; }
+        .tab-btn { flex: 1; padding: 12px 5px; border: none; border-radius: 10px; cursor: pointer; background: var(--tab-bg); color: var(--text); font-weight: bold; font-size: 0.82rem; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .tab-btn.active { background: var(--primary); color: white; }
+
+        .items-grid { flex: 1; display: none; flex-direction: column; gap: 8px; padding: 5px; z-index: 10; padding-bottom: 120px; }
+        .items-grid.active { display: flex; }
+
+        .card { background: var(--card); color: var(--text); padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: border 0.3s; }
+        .card.locked { opacity: 0.6; filter: grayscale(0.8); }
+        
+        .settings-row { display: flex; justify-content: space-between; align-items: center; background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 10px; }
+        .toggle-btn { padding: 8px 15px; border-radius: 20px; border: none; font-weight: bold; cursor: pointer; color: white; min-width: 85px; }
+        .on { background: var(--success); } .off { background: var(--danger); }
+        
+        .lang-switch-btn { 
+            background: var(--panel); color: white; padding: 8px 15px; border-radius: 10px; border: 2px solid var(--info); display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: bold;
+        }
+
+        .buy-btn { border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="desktop-side-banner banner-left">
+        <script type="text/javascript">atOptions = { 'key' : '205b6d27fa28f0759057232f86523057', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };</script>
+        <script type="text/javascript" src="https://www.highperformanceformat.com/205b6d27fa28f0759057232f86523057/invoke.js"></script>
+    </div>
+
+    <div class="desktop-side-banner banner-right">
+        <script type="text/javascript">atOptions = { 'key' : '205b6d27fa28f0759057232f86523057', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };</script>
+        <script type="text/javascript" src="https://www.highperformanceformat.com/205b6d27fa28f0759057232f86523057/invoke.js"></script>
+    </div>
+
+    <button class="quick-lang-btn" onclick="toggleLanguage()">🌐</button>
+
+    <div id="boost-timers">
+        <div id="jack-timer" class="timer-bar"><span id="txt-jack-active"></span> <span id="jack-sec">30</span></div>
+        <div id="double-timer" class="timer-bar"><span id="txt-double-active"></span> <span id="double-sec">60</span></div>
+        <div id="reactor-timer" class="timer-bar">☢️ المفاعل النووي نشط: <span id="reactor-sec">120</span></div>
+    </div>
+
+    <div class="main-container">
+        <div class="banner-horizontal">
+            <script type="text/javascript">atOptions = { 'key' : 'ed71f53bfd02fc18514c0b9e10c53aec', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };</script>
+            <script type="text/javascript" src="https://www.highperformanceformat.com/ed71f53bfd02fc18514c0b9e10c53aec/invoke.js"></script>
+        </div>
+
+        <div class="display-panel">
+            <div id="rank-name" class="rank-display">أول خطوة ✨</div>
+            <div class="score" id="score">0</div>
+            <div id="power-info"></div>
+            <div class="progress-wrapper">
+                <div id="progress-bar" class="progress-fill"></div>
+                <div id="progress-text" class="progress-label">0% للهدف التالي</div>
+            </div>
+        </div>
+
+        <button id="action-btn" onmousedown="handlePress(event)" ontouchstart="handlePress(event)">🎯</button>
+
+        <div class="tabs">
+            <button class="tab-btn active" id="tab-tools" onclick="showTab('tools', this)"></button>
+            <button class="tab-btn" id="tab-boosts" onclick="showTab('boosts', this)"></button>
+            <button class="tab-btn" id="tab-achievements" onclick="showTab('achievements', this)">🏆</button>
+            <button class="tab-btn" id="tab-settings" onclick="showTab('settings', this)"></button>
+        </div>
+
+        <div id="tools" class="items-grid active"></div>
+
+        <div id="boosts" class="items-grid">
+            <div class="card">
+                <div><strong id="label-jack-name"></strong> (30 ثانية)<br><small id="label-jack-desc"></small></div>
+                <button class="buy-btn" id="btn-jack-buy" style="background:#f1c40f; color:black" onclick="handleSmartBoost('jack')"></button>
+            </div>
+            <div class="card">
+                <div><strong id="label-double-name"></strong> (60 ثانية)<br><small id="label-double-desc"></small></div>
+                <button class="buy-btn" id="btn-double-buy" style="background:#e67e22" onclick="handleSmartBoost('double')"></button>
+            </div>
+            <div class="card" id="reactor-card" style="border: 4px solid #2ecc71;">
+                <div><strong>☢️ المفاعل النووي (120 ثانية)</strong><br><small>قوة 5x تلقائية وإشعاعية</small></div>
+                <button class="buy-btn" id="btn-reactor-buy" style="background:#27ae60" onclick="handleSmartBoost('reactor')">تفعيل (0/3)</button>
+            </div>
+        </div>
+
+        <div id="achievements" class="items-grid"></div>
+
+        <div id="settings" class="items-grid">
+            <div class="settings-row"><span id="set-lang"></span><button class="lang-switch-btn" onclick="toggleLanguage()"><span id="lang-flag">🇺🇸</span> <span id="lang-text">English</span></button></div>
+            <div class="settings-row"><span id="set-dark">🌙 الوضع الليلي</span><button id="dark-toggle" class="toggle-btn" onclick="toggleSetting('darkMode')"></button></div>
+            <div class="settings-row"><span id="set-particles"></span><button id="p-toggle" class="toggle-btn" onclick="toggleSetting('particles')"></button></div>
+            <div class="settings-row"><span id="set-shake"></span><button id="s-toggle" class="toggle-btn" onclick="toggleSetting('shake')"></button></div>
+            <button class="buy-btn" style="background: var(--danger); width: 100%; margin-top: 10px;" onclick="resetGame()">🗑️ مسح جميع البيانات</button>
+        </div>
+
+        <div class="native-ad-box">
+            <script async="async" data-cfasync="false" src="https://pl28486238.effectivegatecpm.com/3a5207ad2c7847be15039c9a28e3e950/invoke.js"></script>
+            <div id="container-3a5207ad2c7847be15039c9a28e3e950"></div>
+        </div>
+
+        <div class="banner-horizontal">
+            <script type="text/javascript">atOptions = { 'key' : 'ed71f53bfd02fc18514c0b9e10c53aec', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };</script>
+            <script type="text/javascript" src="https://www.highperformanceformat.com/ed71f53bfd02fc18514c0b9e10c53aec/invoke.js"></script>
+        </div>
+    </div>
+
+<script>
+    let score = 0; let basePower = 1; let multiplier = 1; let currentIcon = "☝️"; let ownedTools = [0];
+    let isShaking = false; let jackActive = false; let reactorActive = false; let reactorClicks = 0;
+    let currentLang = 'ar'; let config = { particles: true, shake: true, darkMode: false };
+    const smartLink = "https://www.effectivegatecpm.com/pu0gqusquu?key=47fc95ce936ea570932be47e8c171b88";
+
+    const achievementData = [
+        { goal: 100, ar: "أول خطوة ✨", en: "First Step" },
+        { goal: 1000, ar: "الطموح الصغير 🌟", en: "Small Ambition" },
+        { goal: 10000, ar: "مكافح لا يهدأ 🔨", en: "Restless Hustler" },
+        { goal: 50000, ar: "سيد الصبر ⏳", en: "Master of Patience" },
+        { goal: 150000, ar: "إرادة لا تكسر 💎", en: "Unbreakable Will" },
+        { goal: 500000, ar: "جنرال النقرات 🎖️", en: "Click General" },
+        { goal: 1000000, ar: "فخامة المليونير 🎩", en: "The Millionaire" },
+        { goal: 1500000, ar: "الميت الحي 🧟", en: "The Living Dead" },
+        { goal: 3000000, ar: "صياد الثروات 💰", en: "Fortune Hunter" },
+        { goal: 10000000, ar: "ملك اللعبة 👑", en: "King of Game" },
+        { goal: 25000000, ar: "إمبراطور الزمن 🌌", en: "Emperor of Time" },
+        { goal: 50000000, ar: "الأسطورة الخالدة 🏆", en: "The Ultimate Legend" }
+    ];
+
+    const translations = {
+        ar: { power: "⚡ القوة: +", tools: "🛠️ الأدوات", boosts: "🚀 تعزيزات", settings: "⚙️ الإعدادات", particles: "✨ المؤثرات", shake: "📳 الاهتزاز", dark: "🌙 الوضع الليلي", langLabel: "🌐 اللغة", langName: "العربية", flag: "🇪🇬", on: "تشغيل", off: "إيقاف", buy: "تفعيل (إعلان بسيط)", equipped: "✅ مجهز", equip: "تجهيز", jackActive: "🚜 الجاك هامر: ", doubleActive: "🔥 مضاعف النقاط: ", jackName: "🚜 Jackhammer", jackDesc: "سرعة + قوة مضاعفة", doubleName: "🔥 Double Points", doubleDesc: "قوة 2x", toolNames: ["إصبع", "ضربة يد", "مطرقة", "مرزبة", "ديناميت"] },
+        en: { power: "⚡ Power: +", tools: "🛠️ Tools", boosts: "🚀 Boosts", settings: "⚙️ Settings", particles: "✨ Particles", shake: "📳 Shake", dark: "🌙 Dark Mode", langLabel: "🌐 Language", langName: "English", flag: "🇺🇸", on: "ON", off: "OFF", buy: "Use (Quick Ad)", equipped: "✅ Equipped", equip: "Equip", jackActive: "🚜 Jackhammer: ", doubleActive: "🔥 Double Points: ", jackName: "🚜 Jackhammer", jackDesc: "Super Speed + 2x Power", doubleName: "🔥 Double Points", doubleDesc: "2x Global Multiplier", toolNames: ["Finger", "Hand Smash", "Hammer", "Sledge", "Dynamite"] }
+    };
+
+    const toolList = [
+        { cost: 0, power: 1, icon: "☝️", pColor: "#95a5a6" },
+        { cost: 200, power: 5, icon: "🖐️", pColor: "#e67e22" },
+        { cost: 2500, power: 20, icon: "🔨", pColor: "#7f8c8d" },
+        { cost: 25000, power: 100, icon: "⚒️", pColor: "#34495e" },
+        { cost: 250000, power: 500, icon: "🧨", pColor: "#e74c3c" }
+    ];
+
+    function saveGame() { localStorage.setItem('clickerEmpireData', JSON.stringify({ score, ownedTools, currentIcon, basePower, config, currentLang, reactorClicks })); }
+    function loadGame() {
+        const savedData = localStorage.getItem('clickerEmpireData');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            score = data.score || 0; ownedTools = data.ownedTools || [0]; currentIcon = data.currentIcon || "☝️";
+            basePower = data.basePower || 1; config = data.config || config; currentLang = data.currentLang || 'ar';
+            reactorClicks = data.reactorClicks || 0;
+            if(config.darkMode) document.body.classList.add('dark-mode');
+            document.getElementById('html-tag').dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+        }
+    }
+
+    function resetGame() { if (confirm("هل أنت متأكد؟ سيتم حذف جميع تقدمك!")) { localStorage.removeItem('clickerEmpireData'); location.reload(); } }
+    function toggleLanguage() { currentLang = currentLang === 'ar' ? 'en' : 'ar'; document.getElementById('html-tag').dir = currentLang === 'ar' ? 'rtl' : 'ltr'; saveGame(); updateDisplay(); }
+    function toggleSetting(type) { config[type] = !config[type]; if(type === 'darkMode') document.body.classList.toggle('dark-mode', config.darkMode); saveGame(); updateDisplay(); }
+
+    function handlePress(e) {
+        if (e.cancelable) e.preventDefault();
+        const btn = document.getElementById('action-btn'); btn.classList.add('is-pressed');
+        executeClick(e); setTimeout(() => { btn.classList.remove('is-pressed'); }, 50);
+    }
+
+    function executeClick(e) {
+        score += (jackActive ? basePower * multiplier * 2 : basePower * multiplier);
+        if(config.shake && (basePower >= 20 || jackActive)) triggerShake();
+        const tool = toolList.find(t => t.icon === currentIcon);
+        const rect = document.getElementById('action-btn').getBoundingClientRect();
+        let x = e.touches ? e.touches[0].clientX : (e.clientX || rect.left + rect.width/2);
+        let y = (e.touches ? e.touches[0].clientY : (e.clientY || rect.top + rect.height/2)) + window.scrollY;
+        if(config.particles) createEffects(x, y, tool.pColor, currentIcon === "🧨", jackActive);
+        updateDisplay(); saveGame();
+    }
+
+    function showTab(id, btn) { document.querySelectorAll('.items-grid').forEach(g => g.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); btn.classList.add('active'); }
+    function renderTools() {
+        const container = document.getElementById('tools'); const t = translations[currentLang];
+        container.innerHTML = toolList.map((tool, index) => {
+            const isOwned = ownedTools.includes(index); const isEquipped = (currentIcon === tool.icon);
+            return `<div class="card"><div><strong>${tool.icon} ${t.toolNames[index]}</strong><br><small>${t.power}${tool.power}</small></div>
+                <button class="buy-btn" style="background: ${isEquipped ? '#95a5a6' : (isOwned ? '#3498db' : '#2ecc71')}" onclick="${isEquipped ? '' : (isOwned ? `switchTool(${index})` : `buyTool(${index})`)}" ${!isOwned && score < tool.cost ? 'disabled' : ''}>
+                ${isEquipped ? t.equipped : (isOwned ? t.equip : tool.cost.toLocaleString() + ' 💰')}</button></div>`;
+        }).join('');
+    }
+
+    function updateAchievements() {
+        const container = document.getElementById('achievements'); let currentRankIdx = -1;
+        achievementData.forEach((ach, index) => { if (score >= ach.goal) currentRankIdx = index; });
+        let milestoneBonus = Math.pow(2, Math.floor((currentRankIdx + 1) / 5));
+        const currentRankName = currentRankIdx === -1 ? achievementData[0].ar : (currentLang === 'ar' ? achievementData[currentRankIdx].ar : achievementData[currentRankIdx].en);
+        document.getElementById('rank-name').innerText = currentRankName;
+        const nextAch = achievementData[currentRankIdx + 1];
+        if(nextAch) {
+            let start = currentRankIdx === -1 ? 0 : achievementData[currentRankIdx].goal;
+            let diff = nextAch.goal - start; let progress = ((score - start) / diff) * 100;
+            document.getElementById('progress-bar').style.width = Math.min(progress, 100) + "%";
+            document.getElementById('progress-text').innerText = Math.floor(Math.min(progress, 100)) + "% للوصول لـ " + (currentLang === 'ar' ? nextAch.ar : nextAch.en);
+        } else { document.getElementById('progress-bar').style.width = "100%"; document.getElementById('progress-text').innerText = "تم الوصول للقمة! 👑"; }
+        container.innerHTML = achievementData.map((ach, idx) => `<div class="card ${score < ach.goal ? 'locked' : ''}"><div><strong>${currentLang === 'ar' ? ach.ar : ach.en}</strong><br><small>${ach.goal.toLocaleString()} 💰</small></div><span>${score >= ach.goal ? '✅' : '🔒'}</span></div>`).join('');
+        return milestoneBonus;
+    }
+
+    function createEffects(x, y, color, isDynamite = false, isJack = false, isReactor = false) {
+        const num = document.createElement('div'); num.className = 'floating-num';
+        let val = (isReactor ? basePower * 5 : (isJack ? basePower * multiplier * 2 : basePower * multiplier));
+        num.innerText = `+${val.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US')}`;
+        if(isReactor) num.style.color = "#2ecc71";
+        num.style.left = x + 'px'; num.style.top = y + 'px';
+        document.body.appendChild(num); setTimeout(() => num.remove(), 600);
+        if(!config.particles) return;
+
+        if (isReactor) {
+            // تأثير الدخان النووي المتقاطع
+            for(let i=0; i<8; i++){
+                const smoke = document.createElement('div');
+                smoke.className = 'nuclear-smoke';
+                let size = Math.random() * 15 + 10;
+                smoke.style.width = size + 'px'; smoke.style.height = size + 'px';
+                smoke.style.left = x + 'px'; smoke.style.top = y + 'px';
+                smoke.style.setProperty('--mx', (Math.random() - 0.5) * 100 + 'px');
+                smoke.style.setProperty('--dx', (Math.random() - 0.5) * 150 + 'px');
+                document.body.appendChild(smoke);
+                setTimeout(() => smoke.remove(), 2000);
+            }
+        } else {
+            let count = isDynamite ? 30 : (isJack ? 12 : 6);
+            for(let i=0; i<count; i++) {
+                const p = document.createElement('div'); p.className = 'particle';
+                if (isDynamite) { p.style.borderRadius = "50%"; p.style.backgroundColor = Math.random() > 0.5 ? "#ff4757" : "#747d8c"; p.style.width = '10px'; p.style.height = '10px'; }
+                else if (isJack) { let type = Math.random(); if (type < 0.5) { p.classList.add('shard-rect'); p.style.backgroundColor = "#57606f"; } else { p.classList.add('shard-tri'); } }
+                else { p.style.borderRadius = "50%"; p.style.backgroundColor = color; p.style.width = '6px'; p.style.height = '6px'; }
+                p.style.left = x + 'px'; p.style.top = y + 'px';
+                p.style.setProperty('--dx', (Math.random() - 0.5) * 200 + 'px'); p.style.setProperty('--dy', (Math.random() - 0.5) * 200 + 'px');
+                p.style.setProperty('--s', Math.random() * 2 + 1); p.style.setProperty('--dr', (Math.random() * 360) + 'deg'); 
+                document.body.appendChild(p); setTimeout(() => p.remove(), 500);
+            }
+        }
+    }
+
+    function triggerShake() { if (isShaking || !config.shake) return; isShaking = true; document.body.classList.add('shaking'); setTimeout(() => { document.body.classList.remove('shaking'); isShaking = false; }, 80); }
+    function buyTool(index) { if (score >= toolList[index].cost) { score -= toolList[index].cost; ownedTools.push(index); switchTool(index); saveGame(); } }
+    function switchTool(index) { basePower = toolList[index].power; currentIcon = toolList[index].icon; updateDisplay(); saveGame(); }
+
+    function handleSmartBoost(type) {
+        window.open(smartLink, '_blank');
+        if(type === 'jack') useJackhammer();
+        else if(type === 'double') useDouble();
+        else if(type === 'reactor') {
+            reactorClicks++;
+            if(reactorClicks >= 3) { reactorClicks = 0; useReactor(); }
+            updateDisplay(); saveGame();
+        }
+    }
+
+    function useReactor() {
+        if(reactorActive) return;
+        let time = 120; reactorActive = true;
+        document.getElementById('reactor-timer').style.display = 'block';
+        const inv = setInterval(() => {
+            score += (basePower * 5);
+            const btn = document.getElementById('action-btn'); const rect = btn.getBoundingClientRect();
+            if(config.particles) createEffects(rect.left + Math.random()*rect.width, (rect.top + Math.random()*rect.height) + window.scrollY, "#2ecc71", false, false, true);
+            updateDisplay();
+        }, 1000);
+        const secInv = setInterval(() => { time--; document.getElementById('reactor-sec').innerText = time; if(time <= 0) { clearInterval(inv); clearInterval(secInv); reactorActive = false; document.getElementById('reactor-timer').style.display = 'none'; saveGame(); } }, 1000);
+    }
+
+    function useJackhammer() {
+        if(jackActive) return;
+        let time = 30; jackActive = true; document.getElementById('jack-timer').style.display = 'block';
+        const inv = setInterval(() => {
+            const btn = document.getElementById('action-btn'); btn.classList.add('is-pressed'); setTimeout(() => btn.classList.remove('is-pressed'), 35);
+            score += (basePower * multiplier * 2);
+            const rect = btn.getBoundingClientRect(); if(config.particles) createEffects(rect.left + Math.random()*rect.width, (rect.top + Math.random()*rect.height) + window.scrollY, "#57606f", false, true);
+            if(config.shake) triggerShake(); updateDisplay();
+        }, 65);
+        const secInv = setInterval(() => { time--; document.getElementById('jack-sec').innerText = time; if(time <= 0) { clearInterval(inv); clearInterval(secInv); jackActive = false; document.getElementById('jack-timer').style.display = 'none'; saveGame(); } }, 1000);
+    }
+
+    function useDouble() {
+        let time = 60; multiplier = 2; document.getElementById('double-timer').style.display = 'block';
+        const inv = setInterval(() => { time--; document.getElementById('double-sec').innerText = time; if(time <= 0) { clearInterval(inv); multiplier = 1; document.getElementById('double-timer').style.display = 'none'; updateDisplay(); saveGame(); } }, 1000);
+        updateDisplay();
+    }
+
+    function updateDisplay() {
+        const t = translations[currentLang]; let bonus = updateAchievements();
+        document.getElementById('score').innerText = Math.floor(score).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US');
+        document.getElementById('power-info').innerText = `${t.power}${(basePower * multiplier * bonus).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US')}`;
+        document.getElementById('tab-tools').innerText = t.tools; document.getElementById('tab-boosts').innerText = t.boosts; document.getElementById('tab-settings').innerText = t.settings;
+        document.getElementById('set-lang').innerText = t.langLabel; document.getElementById('set-particles').innerText = t.particles; document.getElementById('set-shake').innerText = t.shake; document.getElementById('set-dark').innerText = t.dark;
+        const otherLang = currentLang === 'ar' ? 'en' : 'ar';
+        document.getElementById('lang-flag').innerText = translations[otherLang].flag; document.getElementById('lang-text').innerText = translations[otherLang].langName;
+        document.getElementById('p-toggle').innerText = config.particles ? t.on : t.off; document.getElementById('p-toggle').className = `toggle-btn ${config.particles ? 'on' : 'off'}`;
+        document.getElementById('s-toggle').innerText = config.shake ? t.on : t.off; document.getElementById('s-toggle').className = `toggle-btn ${config.shake ? 'on' : 'off'}`;
+        document.getElementById('dark-toggle').innerText = config.darkMode ? t.on : t.off; document.getElementById('dark-toggle').className = `toggle-btn ${config.darkMode ? 'on' : 'off'}`;
+        document.getElementById('txt-jack-active').innerText = t.jackActive; document.getElementById('txt-double-active').innerText = t.doubleActive;
+        document.getElementById('label-jack-name').innerText = t.jackName; document.getElementById('label-jack-desc').innerText = t.jackDesc;
+        document.getElementById('label-double-name').innerText = t.doubleName; document.getElementById('label-double-desc').innerText = t.doubleDesc;
+        document.getElementById('btn-jack-buy').innerText = t.buy; document.getElementById('btn-double-buy').innerText = t.buy;
+        
+        // تحديث هالة المفاعل النووي (0 أخضر، 1 أصفر، 2 أحمر)
+        const reactorCard = document.getElementById('reactor-card');
+        const colors = ["#2ecc71", "#f1c40f", "#e74c3c"];
+        reactorCard.style.borderColor = colors[reactorClicks] || "#2ecc71";
+        document.getElementById('btn-reactor-buy').innerText = `تفعيل (${reactorClicks}/3)`;
+        
+        renderTools();
+    }
+
+    loadGame(); updateDisplay();
+</script>
+
+<script src="https://pl28484365.effectivegatecpm.com/55/69/6e/55696ef49336c95af06d5b5edd1515ed.js"></script>
+
+</body>
+</html>
